@@ -51,6 +51,9 @@ lazy val alpakka = project
   .aggregate(modules: _*)
   .aggregate(`doc-examples`)
   .settings(
+    inThisBuild(Seq(
+      publishTo := Some("releases" at "https://nexus.com/nexus/content/repositories/releases")
+    )),
     onLoadMessage :=
       """
         |** Welcome to the sbt build definition for Alpakka! **
@@ -108,7 +111,7 @@ lazy val csv = alpakkaProject("csv", "csv", Dependencies.Csv, whitesourceGroup :
 lazy val csvBench = alpakkaProject("csv-bench", "csvBench", publish / skip := true)
   .dependsOn(csv)
   .enablePlugins(JmhPlugin)
-  .disablePlugins(BintrayPlugin, MimaPlugin)
+  .disablePlugins(/*BintrayPlugin,*/ MimaPlugin)
 
 lazy val dynamodb = alpakkaProject("dynamodb", "aws.dynamodb", Dependencies.DynamoDB)
 
@@ -237,7 +240,7 @@ lazy val mqttStreamingBench = alpakkaProject("mqtt-streaming-bench",
                                              publish / skip := true,
                                              crossScalaVersions -= Dependencies.Scala211)
   .enablePlugins(JmhPlugin)
-  .disablePlugins(BintrayPlugin, MimaPlugin)
+  .disablePlugins(/*BintrayPlugin,*/ MimaPlugin)
   .dependsOn(mqtt, mqttStreaming)
 
 lazy val orientdb = alpakkaProject("orientdb",
@@ -247,7 +250,7 @@ lazy val orientdb = alpakkaProject("orientdb",
                                    parallelExecution in Test := false)
 
 lazy val reference = alpakkaProject("reference", "reference", Dependencies.Reference, publish / skip := true)
-  .disablePlugins(BintrayPlugin, MimaPlugin)
+  .disablePlugins(/*BintrayPlugin,*/ MimaPlugin)
 
 lazy val s3 = alpakkaProject("s3", "aws.s3", Dependencies.S3)
 
@@ -291,7 +294,7 @@ lazy val xml = alpakkaProject("xml", "xml", Dependencies.Xml)
 
 lazy val docs = project
   .enablePlugins(AkkaParadoxPlugin, ParadoxSitePlugin, PreprocessPlugin, PublishRsyncPlugin)
-  .disablePlugins(BintrayPlugin, MimaPlugin)
+  .disablePlugins(/*BintrayPlugin,*/ MimaPlugin)
   .settings(
     name := "Alpakka",
     publish / skip := true,
@@ -354,7 +357,7 @@ lazy val whitesourceSupported = project
 
 lazy val `doc-examples` = project
   .enablePlugins(AutomateHeaderPlugin)
-  .disablePlugins(BintrayPlugin, MimaPlugin, SitePlugin)
+  .disablePlugins(/*BintrayPlugin,*/ MimaPlugin, SitePlugin)
   .dependsOn(
     modules.map(p => classpathDependency(p)): _*
   )
